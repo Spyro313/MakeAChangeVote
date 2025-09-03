@@ -7,7 +7,7 @@ import json
 # ----- Config -----
 POINTS_LIMIT = 10
 NUM_SLIDERS = 7
-PROJECT_NAMES = [" 1.\u00A0P", "2.\u00A0F", "3.\u00A0A", "4.\u00A0S", "5.\u00A0M", "6.\u00A0Q", "7.\u00A0C"]
+PROJECT_NAMES = ["1.\u00A0P", "2.\u00A0F", "3.\u00A0A", "4.\u00A0S", "5.\u00A0M", "6.\u00A0Q", "7.\u00A0C"]
 logins = {"941": ("", False), "890": ("", False), "307": ("", False), "241": ("", False), "808": ("", False), "153": ("", False), "594": ("", False), "638": ("", False), "168": ("", False), "925": ("", False), "376": ("", False), "000": ("", True)}
 CSV_FILE = "votes.csv"
 JSON_FILE = "logins.json"
@@ -83,7 +83,7 @@ elif logins[st.session_state.login][1] == False:
             st.error(f"Please allocate exactly {POINTS_LIMIT} points before submitting.")
         else:
             vote_data = {
-                f"Project {i+1}": st.session_state[f"slider_{i}"]
+                f"{PROJECT_NAMES[i]}": st.session_state[f"slider_{i}"]
                 for i in range(NUM_SLIDERS)
             }
             df_new = pd.DataFrame([vote_data])
