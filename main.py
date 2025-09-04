@@ -10,7 +10,8 @@ CSV_FILE = "votes.csv"
 JSON_LOGINS = "logins.json"
 JSON_CONFIG = "config.json"
 
-with open(JSON_CONFIG, 'r') as file:
+config_path = os.path.join(os.path.dirname(__file__), JSON_CONFIG)
+with open(config_path, 'r') as file:
     config = json.load(file)
     PROJECT_NAMES = config["project_names"]
     NUM_SLIDERS = len(PROJECT_NAMES)
