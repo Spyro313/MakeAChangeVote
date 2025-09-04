@@ -60,13 +60,14 @@ def handle_slider_change(index):
 # ----- Login UI -----
 if st.session_state.login == "":
     user_login = st.text_input("Enter your code")
-    if st.button("Log in"):
+    col1, col2 = st.columns(2)
+    if col1.button("Log in"):
         if user_login in logins.keys():
             st.session_state.login = user_login
             st.rerun()
         else:
             st.error("Incorrect login")
-    if st.button("View Results"):
+    if col2.button("View Results"):
         st.session_state.login = "results_only"
         st.rerun()
 
