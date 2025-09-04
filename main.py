@@ -5,17 +5,16 @@ import time  # ✅ for sleep
 import json
 
 # ----- Config -----
-logins = {"941": ("", False), "890": ("", False), "307": ("", False), "241": ("", False), "808": ("", False), "153": ("", False), "594": ("", False), "638": ("", False), "168": ("", False), "925": ("", False), "376": ("", False), "000": ("", True)}
 CSV_FILE = "votes.csv"
 JSON_LOGINS = "logins.json"
 JSON_CONFIG = "config.json"
 
-config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), JSON_CONFIG)
 with open(JSON_CONFIG, 'r') as file:
     config = json.load(file)
     PROJECT_NAMES = config["project_names"]
     NUM_SLIDERS = len(PROJECT_NAMES)
     POINTS_LIMIT = config["points"]
+    logins = config["logins"]
 
 
 st.set_page_config(page_title="Make a Change Vote", layout="centered")
