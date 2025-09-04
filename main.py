@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import os
-import time  # ✅ for sleep
 import json
 
 # ----- Config -----
@@ -20,7 +19,7 @@ with open(JSON_CONFIG, 'r') as file:
 st.set_page_config(page_title="Make a Change Vote", layout="centered")
 
 # ----- Title -----
-st.title("🗳️ Allocate 10 Points Across 7 Projects")
+st.title(f"🗳️ Allocate {POINTS_LIMIT} Points Across {NUM_SLIDERS} Projects")
 
 # ----- Initialize session state -----
 if "login" not in st.session_state:
@@ -124,18 +123,3 @@ else:
 
     if st.button("Reload data"):
         st.rerun()
-
-    # ✅ Manual refresh every 10 seconds
-    #time.sleep(10)
-    #st.rerun()
-
-# ----- Admin Reset Button -----
-#with st.expander("⚙️ Admin Controls"):
-#    if st.button("🗑️ Reset All Votes"):
-#        if os.path.exists(CSV_FILE):
-#            os.remove(CSV_FILE)
-#            st.success("✅ All votes have been reset.")
-#            st.session_state.submitted = False
-#            st.rerun()
-#        else:
-#            st.info("ℹ️ No vote file found to reset.")
