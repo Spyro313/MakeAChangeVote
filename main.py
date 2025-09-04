@@ -10,7 +10,7 @@ CSV_FILE = "votes.csv"
 JSON_LOGINS = "logins.json"
 JSON_CONFIG = "config.json"
 
-config_path = os.path.join(os.path.dirname(__file__), JSON_CONFIG)
+config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), JSON_CONFIG)
 with open(config_path, 'r') as file:
     config = json.load(file)
     PROJECT_NAMES = config["project_names"]
