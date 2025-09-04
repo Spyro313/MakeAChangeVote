@@ -5,12 +5,16 @@ import time  # ✅ for sleep
 import json
 
 # ----- Config -----
-POINTS_LIMIT = 10
-NUM_SLIDERS = 7
-PROJECT_NAMES = ["1.\u00A0P", "2.\u00A0F", "3.\u00A0A", "4.\u00A0S", "5.\u00A0M", "6.\u00A0Q", "7.\u00A0C"]
 logins = {"941": ("", False), "890": ("", False), "307": ("", False), "241": ("", False), "808": ("", False), "153": ("", False), "594": ("", False), "638": ("", False), "168": ("", False), "925": ("", False), "376": ("", False), "000": ("", True)}
 CSV_FILE = "votes.csv"
-JSON_FILE = "logins.json"
+JSON_LOGINS = "logins.json"
+JSON_CONFIG = "config.json"
+
+with open(JSON_CONFIG, 'r') as file:
+    config = json.load(file)
+    PROJECT_NAMES = config["project_names"]
+    NUM_SLIDERS = len(PROJECT_NAMES)
+    POINTS_LIMIT = config["points"]
 
 
 st.set_page_config(page_title="Make a Change Vote", layout="centered")
@@ -21,8 +25,8 @@ st.title("🗳️ Allocate 10 Points Across 7 Projects")
 # ----- Initialize session state -----
 if "login" not in st.session_state:
     st.session_state.login = ""
-    if not os.path.exists(JSON_FILE):
-        with open(JSON_FILE, 'w') as file:
+    if not os.path.exists(JSON_LOGINS):
+        with open(JSON_LOGINS, 'w') as file:
             file.write(json.dumps(logins))
 
 for i in range(NUM_SLIDERS):
@@ -30,7 +34,7 @@ for i in range(NUM_SLIDERS):
     if slider_key not in st.session_state:
         st.session_state[slider_key] = 0
 
-with open(JSON_FILE, 'r') as file:
+with open(JSON_LOGINS, 'r') as file:
     logins = json.load(file)
 
 # ----- Slider change constraint -----
@@ -69,7 +73,7 @@ elif logins[st.session_state.login][1] == False:
         st.slider(
             PROJECT_NAMES[i],
             min_value=0,
-            max_value=10,
+            max_value=POINTS_LIMIT,
             key=f"slider_{i}",
             on_change=handle_slider_change,
             args=(i,)
@@ -97,7 +101,8 @@ elif logins[st.session_state.login][1] == False:
             df_all.to_csv(CSV_FILE, index=False)
 
             logins[st.session_state.login][1] = True
-            with open(JSON_FILE, 'w') as file:
+            with open(JSON_LOGINS
+        , 'w') as file:
                 file.write(json.dumps(logins))
             st.rerun()
 
