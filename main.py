@@ -14,6 +14,7 @@ with open(JSON_CONFIG, 'r') as file:
     NUM_SLIDERS = len(PROJECT_NAMES)
     POINTS_LIMIT = config["points"]
     logins = config["logins"]
+    logins["results_only"] = ["View Results", True]
 
 
 st.set_page_config(page_title="Make a Change Vote", layout="centered")
@@ -65,6 +66,9 @@ if st.session_state.login == "":
             st.rerun()
         else:
             st.error("Incorrect login")
+    if st.button("View Results"):
+        st.session_state.login = "results_only"
+        st.rerun()
 
 # ----- Voting UI -----
 elif logins[st.session_state.login][1] == False:
@@ -100,8 +104,7 @@ elif logins[st.session_state.login][1] == False:
             df_all.to_csv(CSV_FILE, index=False)
 
             logins[st.session_state.login][1] = True
-            with open(JSON_LOGINS
-        , 'w') as file:
+            with open(JSON_LOGINS, 'w') as file:
                 file.write(json.dumps(logins))
             st.rerun()
 
