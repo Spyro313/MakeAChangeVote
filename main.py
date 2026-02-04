@@ -117,14 +117,20 @@ elif logins[st.session_state.login][1] == False:
 # ----- ADMIN UI -----
 elif st.session_state.login == "admin":
     st.markdown("## 🛠️ Admin Panel")
-
+    project_A = st.text_input("Project A")
+    project_B = st.text_input("Project B")
     if st.button("Reset All Votes"):
         if os.path.exists(CSV_FILE):
             os.remove(CSV_FILE)
         for login in logins:
             logins[login][1] = False
+        logins["results_only"] = ["View Results", True]
+        logins["admin"] = ["Admin", True]
         with open(JSON_LOGINS, 'w') as file:
             file.write(json.dumps(logins))
+        PROJECT_NAMES = [project_A, project_B]
+        NUM_SLIDERS = 2
+        POINTS_LIMIT = 1
         st.success("All votes reset.")
         st.rerun()
 
