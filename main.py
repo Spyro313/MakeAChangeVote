@@ -13,6 +13,7 @@ with open(JSON_CONFIG, 'r') as file:
     PROJECT_NAMES = config["project_names"]
     NUM_SLIDERS = len(PROJECT_NAMES)
     POINTS_LIMIT = config["points"]
+    ADMIN = config["admin"]
     logins = config["logins"]
     logins["results_only"] = ["View Results", True]
 
@@ -65,6 +66,9 @@ if st.session_state.login == "":
         if user_login in logins.keys():
             st.session_state.login = user_login
             st.rerun()
+        elif user_login == config.get("admin", ""):
+            st.session_state.login = "admin"
+            st.rerun()
         else:
             st.error("Incorrect login")
     if col2.button("View Results"):
@@ -108,6 +112,20 @@ elif logins[st.session_state.login][1] == False:
             with open(JSON_LOGINS, 'w') as file:
                 file.write(json.dumps(logins))
             st.rerun()
+
+# ----- ADMIN UI -----
+elif st.session_state.login == "admin":
+    st.markdown("## 🛠️ Admin Panel")
+
+    if st.button("Reset All Votes"):
+        if os.path.exists(CSV_FILE):
+            os.remove(CSV_FILE)
+        for login in logins:
+            logins[login][1] = False
+        with open(JSON_LOGINS, 'w') as file:
+            file.write(json.dumps(logins))
+        st.success("All votes reset.")
+        st.rerun()
 
 # ----- Results UI -----
 else:
