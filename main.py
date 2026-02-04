@@ -16,6 +16,7 @@ with open(JSON_CONFIG, 'r') as file:
     ADMIN = config["admin"]
     logins = config["logins"]
     logins["results_only"] = ["View Results", True]
+    logins["admin"] = ["Admin", True]
 
 
 st.set_page_config(page_title="Make a Change Vote", layout="centered")
