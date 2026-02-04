@@ -128,9 +128,14 @@ elif st.session_state.login == "admin":
         logins["admin"] = ["Admin", True]
         with open(JSON_LOGINS, 'w') as file:
             file.write(json.dumps(logins))
-        PROJECT_NAMES = [project_A, project_B]
-        NUM_SLIDERS = 2
-        POINTS_LIMIT = 1
+        new_config = {
+            "project_names": [project_A, project_B],
+            "points": 1,
+            "logins": logins,
+            "admin": ADMIN
+        }
+        with open(JSON_CONFIG, 'w') as file:
+            file.write(json.dumps(new_config, indent=4))
         st.success("All votes reset.")
         st.rerun()
 
