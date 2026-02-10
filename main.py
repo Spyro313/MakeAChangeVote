@@ -151,6 +151,16 @@ elif st.session_state.login == "admin":
         with st.expander("📄 See all submissions"):
             st.dataframe(df_results)
 
+    if os.path.exists(CSV_FILE):
+        df_results = pd.read_csv(CSV_FILE)
+        totals = df_results.sum()
+
+        st.markdown("## 📊 Aggregated Results")
+        st.bar_chart(totals)
+
+        with st.expander("📄 See all submissions"):
+            st.dataframe(df_results)
+
 # ----- Results UI -----
 else:
     st.success("✅ Your vote has been submitted.")
