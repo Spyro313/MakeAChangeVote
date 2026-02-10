@@ -120,6 +120,7 @@ elif st.session_state.login == "admin":
     st.markdown("## 🛠️ Admin Panel")
     project_A = st.text_input("Project A")
     project_B = st.text_input("Project B")
+    project_C = st.text_input("Project C")
     col3, col4 = st.columns(2)
     if col3.button("Reset All Votes"):
         if os.path.exists(CSV_FILE):
@@ -132,7 +133,7 @@ elif st.session_state.login == "admin":
         with open(JSON_LOGINS, 'w') as file:
             file.write(json.dumps(logins))
         new_config = {
-            "project_names": [project_A, project_B],
+            "project_names": [project_A, project_B, project_C] if project_C else [project_A, project_B],
             "points": 1,
             "logins": logins,
             "admin": ADMIN
