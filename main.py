@@ -120,7 +120,8 @@ elif st.session_state.login == "admin":
     st.markdown("## 🛠️ Admin Panel")
     project_A = st.text_input("Project A")
     project_B = st.text_input("Project B")
-    if st.button("Reset All Votes"):
+    col3, col4 = st.columns(2)
+    if col3.button("Reset All Votes"):
         if os.path.exists(CSV_FILE):
             pd.read_csv(CSV_FILE).to_csv(VOTES1, index=False)
             os.remove(CSV_FILE)
@@ -139,6 +140,9 @@ elif st.session_state.login == "admin":
         with open(JSON_CONFIG, 'w') as file:
             file.write(json.dumps(new_config, indent=4))
         st.success("All votes reset.")
+        st.rerun()
+    
+    if col4.button("Reload data"):
         st.rerun()
 
     if os.path.exists(VOTES1):
