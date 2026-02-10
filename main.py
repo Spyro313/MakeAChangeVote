@@ -5,6 +5,7 @@ import json
 
 # ----- Config -----
 CSV_FILE = "votes.csv"
+VOTES1 = "votes1.csv"
 JSON_LOGINS = "logins.json"
 JSON_CONFIG = "config.json"
 
@@ -121,7 +122,7 @@ elif st.session_state.login == "admin":
     project_B = st.text_input("Project B")
     if st.button("Reset All Votes"):
         if os.path.exists(CSV_FILE):
-            pd.read_csv(CSV_FILE).to_csv("votes1.csv", index=False)
+            pd.read_csv(CSV_FILE).to_csv(VOTES1, index=False)
             os.remove(CSV_FILE)
         for login in logins:
             logins[login][1] = False
@@ -139,6 +140,16 @@ elif st.session_state.login == "admin":
             file.write(json.dumps(new_config, indent=4))
         st.success("All votes reset.")
         st.rerun()
+
+    if os.path.exists(VOTES1):
+        df_results = pd.read_csv(VOTES1)
+        totals = df_results.sum()
+
+        st.markdown("## 📊 Aggregated Results")
+        st.bar_chart(totals)
+
+        with st.expander("📄 See all submissions"):
+            st.dataframe(df_results)
 
 # ----- Results UI -----
 else:
