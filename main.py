@@ -121,6 +121,7 @@ elif st.session_state.login == "admin":
     project_B = st.text_input("Project B")
     if st.button("Reset All Votes"):
         if os.path.exists(CSV_FILE):
+            pd.read_csv(CSV_FILE).to_csv("votes1.csv", index=False)
             os.remove(CSV_FILE)
         for login in logins:
             logins[login][1] = False
