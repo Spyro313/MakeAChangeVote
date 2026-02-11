@@ -5,9 +5,9 @@ import json
 
 # ----- Config -----
 CSV_FILE = "votes.csv"
-ARCHIVE = []
 JSON_LOGINS = "logins.json"
 JSON_CONFIG = "config.json"
+JSON_ARCHIVE = "archive.json"
 
 with open(JSON_CONFIG, 'r') as file:
     config = json.load(file)
@@ -31,6 +31,10 @@ if "login" not in st.session_state:
     if not os.path.exists(JSON_LOGINS):
         with open(JSON_LOGINS, 'w') as file:
             file.write(json.dumps(logins))
+    
+    if not os.path.exists(JSON_ARCHIVE):
+        with open(JSON_ARCHIVE, 'w') as file:
+            file.write(json.dumps({"archive": []}))
 
 for i in range(NUM_SLIDERS):
     slider_key = f"slider_{i}"
@@ -39,6 +43,9 @@ for i in range(NUM_SLIDERS):
 
 with open(JSON_LOGINS, 'r') as file:
     logins = json.load(file)
+
+with open(JSON_ARCHIVE, 'r') as file:
+    ARCHIVE = json.load(file)["archive"]
 
 # ----- Slider change constraint -----
 def total_excluding(index):
@@ -127,6 +134,8 @@ elif st.session_state.login == "admin":
             NEW_VOTES = f"votes_{len(ARCHIVE) + 1}.csv"
             pd.read_csv(CSV_FILE).to_csv(NEW_VOTES, index=False)
             ARCHIVE.append(NEW_VOTES)
+            with open(JSON_ARCHIVE, 'w') as file:
+                file.write(json.dumps({"archive": ARCHIVE}))
             os.remove(CSV_FILE)
         for login in logins:
             logins[login][1] = False
