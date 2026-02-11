@@ -5,7 +5,7 @@ import json
 
 # ----- Config -----
 CSV_FILE = "votes.csv"
-VOTES1 = "votes1.csv"
+ARCHIVE = []
 JSON_LOGINS = "logins.json"
 JSON_CONFIG = "config.json"
 
@@ -124,7 +124,9 @@ elif st.session_state.login == "admin":
     col3, col4 = st.columns(2)
     if col3.button("Reset All Votes"):
         if os.path.exists(CSV_FILE):
-            pd.read_csv(CSV_FILE).to_csv(VOTES1, index=False)
+            NEW_VOTES = f"votes_{len(ARCHIVE) + 1}.csv"
+            pd.read_csv(CSV_FILE).to_csv(NEW_VOTES, index=False)
+            ARCHIVE.append(NEW_VOTES)
             os.remove(CSV_FILE)
         for login in logins:
             logins[login][1] = False
@@ -146,11 +148,11 @@ elif st.session_state.login == "admin":
     if col4.button("Reload data"):
         st.rerun()
 
-    if os.path.exists(VOTES1):
-        df_results = pd.read_csv(VOTES1)
+    for archived_file in ARCHIVE:
+        df_results = pd.read_csv(archived_file)
         totals = df_results.sum()
 
-        st.markdown("## 📊 Aggregated Results")
+        st.markdown(f"## 📊Results for {archived_file}")
         st.bar_chart(totals)
 
         with st.expander("📄 See all submissions"):
